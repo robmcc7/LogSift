@@ -63,6 +63,23 @@ def export_logs():
         messagebox.showinfo("Success", f"Logs exported to {file_path}")
     except Exception as e:
         messagebox.showerror("Export Failed", str(e))
+        
+def export_logs_to_txt():
+    displayed = get_displayed_lines()
+    if not displayed:
+        messagebox.showerror("Error", "No log data to export.")
+        return
+
+    file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
+    if not file_path:
+        return
+
+    try:
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write("\n".join(displayed))
+        messagebox.showinfo("Success", f"Logs exported to {file_path}")
+    except Exception as e:
+        messagebox.showerror("Export Failed", str(e))
 
 # --- GUI SETUP ---
 root = tk.Tk()
@@ -99,8 +116,14 @@ result_label.pack(pady=5)
 text_area = tk.Text(root, wrap='word', font=("Courier", 10))
 text_area.pack(expand=True, fill='both', padx=10, pady=10)
 
-export_btn = tk.Button(root, text="Export to CSV", command=export_logs)
-export_btn.pack(pady=5)
+export_frame = tk.Frame(root)
+export_frame.pack(pady=5)
+
+export_btn = tk.Button(export_frame, text="Export to CSV", command=export_logs)
+export_btn.pack(side=tk.LEFT, padx=5)
+
+export_txt_btn = tk.Button(export_frame, text="Export to TXT", command=export_logs_to_txt)
+export_txt_btn.pack(side=tk.LEFT, padx=5)
 
 log_lines = []  
 root.mainloop()
