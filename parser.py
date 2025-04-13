@@ -13,12 +13,12 @@ def count_matches(lines, keyword):
     return sum(1 for line in lines if keyword.lower() in line.lower())
 
 def parse_log_line(line):
-    pattern = re.pattern(r"\[(.*?)\]\s+\[(.*?)\]\s+(.*)", line)
-    if pattern:
+    match = re.match(r"\[(.*?)\]\s+\[(.*?)\]\s+(.*)", line)
+    if match:
         return {
-            "timestamp": pattern.group(1),
-            "level": pattern.group(2),
-            "message": pattern.group(3)
+            "timestamp": match.group(1),
+            "level": match.group(2),
+            "message": match.group(3)
         }
     return None
 
